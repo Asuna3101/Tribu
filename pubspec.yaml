@@ -1,0 +1,55 @@
+name: tribu_app
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  shared_preferences: ^2.1.0
+  path_provider: ^2.0.0
+  cupertino_icons: ^1.0.8
+  get: ^4.6.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_launcher_icons: "^0.13.1"
+  flutter_native_splash: ^2.2.16
+  flutter_lints: ^4.0.0
+
+flutter_launcher_icons:
+  android: true
+  image_path: "assets/img/icon.png"
+
+flutter_native_splash:
+  android: true
+  background_image: assets/img/splash/splash_background.png
+  branding: assets/img/splash/splash_branding.png
+  image: assets/img/splash/splash_icon.png
+  background_image_dark: assets/img/splash/splash_background_dark.png
+  branding_dark: assets/img/splash/splash_branding_dark.png
+  image_dark: assets/img/splash/splash_icon_dark.png
+
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: Titulo
+      fonts:
+        - asset: assets/fonts/Titulo.ttf
+    - family: Texto
+      fonts:
+        - asset: assets/fonts/Texto.ttf
+  assets:
+    - assets/img/splash/splash_icon.png
+    - assets/img/splash/splash_icon_dark.png
+    - assets/json/post.json
+    - assets/img/adaptive_icon_foreground.png
+    - assets/img/sample-post-image.png
+    - assets/img/sample-profile-image.png
+    - assets/json/usuarios.json
+    - assets/json/alumnos.json
