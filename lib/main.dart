@@ -12,6 +12,8 @@ import 'package:tribu_app/pages/config/config_page.dart';
 import 'package:tribu_app/pages/change_password/change_password_page.dart';
 import 'package:tribu_app/configs/app_theme.dart'; // Importa tu archivo de temas
 import 'package:tribu_app/pages/visualizacion/visualizacion_page.dart';
+import 'package:tribu_app/pages/profesor/profesor_page.dart';
+import 'package:tribu_app/pages/calificar_profesor/calificar_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,7 +31,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system, // Cambia automáticamente según el sistema
       initialRoute: '/inicio',
       routes: {
-        '/home': (context) => HomePage(),
+        '/home': (context) => HomePage(), //cambiar a home
         '/sign-in': (context) => SignInPage(),
         '/sign-up': (context) => SignUpPage(),
         '/reset': (context) => ResetPage(),
@@ -41,6 +43,8 @@ class MyApp extends StatelessWidget {
         '/config': (context) => ConfigPage(),
         '/change': (context) => ChangePasswordPage(),
         '/visualizacion': (context) => VisualizacionPage(),
+        '/profesor': (context) => ProfesorPage(), //cambiar a profesor
+        '/calificar': (context) => CalificarProfesorPage(),
       },
     );
   }
