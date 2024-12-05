@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tribu_app/services/usuario_service.dart';
-import 'package:tribu_app/models/usuario.dart';
 
 class ChangeController extends GetxController {
   TextEditingController txtNewPassword = TextEditingController();
   TextEditingController txtRepeatPassword = TextEditingController();
-  var userCodigo = ''.obs;  // Código del usuario
+  var userCodigo = ''.obs; // Código del usuario
 
   @override
   void onInit() {
     super.onInit();
 
     // Recuperamos el código del usuario desde los argumentos
-    userCodigo.value = Get.arguments ?? '';  // Si no hay argumentos, se asigna vacío
+    userCodigo.value =
+        Get.arguments ?? ''; // Si no hay argumentos, se asigna vacío
 
     // Imprimir el código recibido para depuración
     print('Código recibido en ChangeController: ${userCodigo.value}');
@@ -46,9 +46,11 @@ class ChangeController extends GetxController {
     }
 
     // Verificar que el código esté disponible antes de hacer la solicitud
-    print('Código del usuario en changePassword: ${userCodigo.value}');  // Verifica que esté correcto
+    print(
+        'Código del usuario en changePassword: ${userCodigo.value}'); // Verifica que esté correcto
 
-    bool success = await UsuarioService().changePassword(userCodigo.value, newPassword);
+    bool success =
+        await UsuarioService().changePassword(userCodigo.value, newPassword);
 
     if (success) {
       Get.snackbar(
@@ -61,7 +63,6 @@ class ChangeController extends GetxController {
       txtNewPassword.clear();
       txtRepeatPassword.clear();
       Get.offAllNamed('/home');
-
     } else {
       Get.snackbar(
         'Error',
