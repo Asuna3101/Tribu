@@ -49,13 +49,21 @@ class PerfilProfesorPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-            Text(
-              'Cursos: ${profesor.asignaturas.join(', ')}',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.black87,
-              ),
-            ),
+            profesor.asignaturas.isNotEmpty
+                ? Text(
+                    'Cursos: ${profesor.asignaturas.join(', ')}',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black87,
+                    ),
+                  )
+                : Text(
+                    'No tiene cursos asignados.',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black87,
+                    ),
+                  ),
           ],
         ),
       ),
