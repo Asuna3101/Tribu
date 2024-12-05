@@ -6,8 +6,7 @@ class PostCard extends StatelessWidget {
   final String userCareer;
   final String postText;
   final String postImageUrl;
-  final String postReacciones;
-  final String postComentarios;
+ 
 
   const PostCard({
     Key? key,
@@ -16,8 +15,6 @@ class PostCard extends StatelessWidget {
     required this.userCareer,
     required this.postText,
     required this.postImageUrl,
-    required this.postReacciones,
-    required this.postComentarios,
   }) : super(key: key);
 
   @override
@@ -71,12 +68,12 @@ class PostCard extends StatelessWidget {
                   onPressed: () {},
                   icon: const Icon(Icons.favorite_border),
                 ),
-                Text(postReacciones),
+                Text(''),
                 IconButton(
                   onPressed: () {},
                   icon: const Icon(Icons.chat_bubble_outline),
                 ),
-                Text(postComentarios),
+                Text(''),
               ],
             ),
           ],

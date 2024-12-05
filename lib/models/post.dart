@@ -1,67 +1,44 @@
 class Post {
-  final int idPost;
-  final String titulo;
-  final String fotoPost;
-  final String descripcion;
-  final int reacciones;
-  final int comentarios;
-  final String material;
-  final int idEstudiante;
-  final String fotoEstudiante;
-  final String nombreEstudiante;
-  final String carreraEstudiante;
+  final String nombreUsuario;
+  final String fotoUsuario; 
+  final String carrera;
+  final String descripcionPost;
+  final String enlaceMaterial;
+  final String fechaSubida;
 
   Post({
-    required this.idPost,
-    required this.titulo,
-    required this.fotoPost,
-    required this.descripcion,
-    required this.reacciones,
-    required this.comentarios,
-    required this.material,
-    required this.idEstudiante,
-    required this.fotoEstudiante,
-    required this.nombreEstudiante,
-    required this.carreraEstudiante,
+    required this.nombreUsuario,
+    required this.fotoUsuario, 
+    required this.carrera,
+    required this.descripcionPost,
+    required this.enlaceMaterial,
+    required this.fechaSubida,
   });
 
-  // Método toString
   @override
   String toString() {
-    return 'Post{idPost: $idPost, titulo: $titulo, fotoPost: $fotoPost, descripcion: $descripcion, reacciones: $reacciones, comentarios: $comentarios, material: $material, idEstudiante: $idEstudiante, fotoEstudiante: $fotoEstudiante, nombreEstudiante: $nombreEstudiante, carreraEstudiante: $carreraEstudiante}';
+    return 'Post{nombreUsuario: $nombreUsuario, fotoUsuario: $fotoUsuario, carrera: $carrera, descripcionPost: $descripcionPost, enlaceMaterial: $enlaceMaterial, fechaSubida: $fechaSubida}';
   }
 
-  // Método toJson
   Map<String, dynamic> toJson() {
     return {
-      'idPost': idPost,
-      'titulo': titulo,
-      'fotoPost': fotoPost,
-      'descripcion': descripcion,
-      'reacciones': reacciones,
-      'comentarios': comentarios,
-      'material': material,
-      'idEstudiante': idEstudiante,
-      'fotoEstudiante': fotoEstudiante,
-      'nombreEstudiante': nombreEstudiante,
-      'carreraEstudiante': carreraEstudiante,
+      'nombre_usuario': nombreUsuario,
+      'foto_usuario': fotoUsuario, 
+      'carrera': carrera,
+      'descripcion_post': descripcionPost,
+      'enlace_material': enlaceMaterial,
+      'fecha_subida': fechaSubida,
     };
   }
 
-  // Método fromMap
   factory Post.fromMap(Map<String, dynamic> map) {
     return Post(
-      idPost: map['id_Post'],
-      titulo: map['titulo'],
-      fotoPost: map['foto_post'],
-      descripcion: map['descripcion'],
-      reacciones: map['reacciones'],
-      comentarios: map['comentarios'],
-      material: map['material'],
-      idEstudiante: map['id_estudiante'],
-      fotoEstudiante: map['foto_estudiante'],
-      nombreEstudiante: map['nombre_estudiante'],
-      carreraEstudiante: map['carrera_estudiante'],
+      nombreUsuario: map['nombre_usuario'],
+      fotoUsuario: map['foto_usuario'], 
+      carrera: map['carrera'],
+      descripcionPost: map['descripcion_post'],
+      enlaceMaterial: map['enlace_material'],
+      fechaSubida: map['fecha_subida'],
     );
   }
 }

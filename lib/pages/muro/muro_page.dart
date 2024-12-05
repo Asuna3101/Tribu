@@ -22,13 +22,12 @@ class MuroPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   Post post = control.posts.value[index];
                   return PostCard(
-                    profilePicUrl: post.fotoEstudiante,
-                    userName: post.nombreEstudiante,
-                    userCareer: post.carreraEstudiante,
-                    postText: post.descripcion,
-                    postImageUrl: post.fotoPost,
-                    postReacciones: post.reacciones.toString(),
-                    postComentarios: post.comentarios.toString(),
+                    profilePicUrl: post.fotoUsuario,
+                    userName: post.nombreUsuario,
+                    userCareer: post.carrera,
+                    postText: post.descripcionPost,
+                    postImageUrl: post.enlaceMaterial,
+                  
                   );
                 },
               );
