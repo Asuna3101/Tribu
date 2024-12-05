@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tribu_app/configs/colors.dart';
 import 'profesor_controller.dart';
@@ -67,7 +67,7 @@ class ProfesorPage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      _buildInfoBox('Asignatura', profesor.asignatura),
+                      _buildInfoBox('Curso', profesor.curso),
                       _buildInfoBox('Correo', profesor.correo),
                       const SizedBox(height: 10),
                       Text(
@@ -82,15 +82,6 @@ class ProfesorPage extends StatelessWidget {
                       const Divider(
                         thickness: 1,
                         color: AppColors.primaryColor,
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        'Promedio de Calificaciones: ${profesor.calificacionPromedio.toStringAsFixed(1)}',
-                        style: const TextStyle(
-                          fontFamily: 'Titulo',
-                          fontSize: 20,
-                          color: AppColors.primaryColor,
-                        ),
                       ),
                       const SizedBox(height: 10),
                       Text(
@@ -198,3 +189,4 @@ class ProfesorPage extends StatelessWidget {
     );
   }
 }
+*/

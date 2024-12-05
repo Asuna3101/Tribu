@@ -1,9 +1,10 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
+import 'package:tribu_app/models/carrera.dart';
+import 'package:tribu_app/services/carrera_service.dart';
+import 'package:tribu_app/models/usuario.dart';
+import 'package:tribu_app/services/usuario_service.dart';
+
 
 class SignUpController extends GetxController {
   TextEditingController txtCodigo = TextEditingController();
@@ -11,109 +12,50 @@ class SignUpController extends GetxController {
   TextEditingController txtCorreo = TextEditingController();
   TextEditingController txtCelular = TextEditingController();
   TextEditingController txtContrasenia = TextEditingController();
+  RxString selectedCarrera = ''.obs; // Usa `.obs` para hacerlo reactivo
+  String selectedFoto = ''; // Foto opcional
 
-  // Listas de opciones para los dropdowns
-  List<String> ciclos = [
-    'seleccionar',
-    'Ciclo 1',
-    'Ciclo 2',
-    'Ciclo 3',
-    'Ciclo 4',
-    'Ciclo 5',
-    'Ciclo 6',
-    'Ciclo 7',
-    'Ciclo 8',
-    'Ciclo 9',
-    'Ciclo 10'
-  ];
-
-  List<String> carreras = [
-    'seleccionar',
-    'Arquitectura',
-    'Administración',
-    'Contabilidad y Finanzas',
-    'Economía',
-    'Marketing',
-    'Negocios Internacionales',
-    'Comunicación',
-    'Derecho',
-    'Ingeniería Civil',
-    'Ingeniería Industrial',
-    'Ingeniería de Sistemas',
-    'Psicología'
-  ];
-
-  // Variables seleccionadas
-  String selectedCiclo = 'seleccionar';
-  String selectedCarrera = 'seleccionar';
-
-  // Método para crear la cuenta
-  Future<void> createAccount(BuildContext context) async {
-    print('Creando cuenta con los siguientes datos:');
-    print('Código: ${txtCodigo.text}');
-    print('Nombre: ${txtNombre.text}');
-    print('Correo: ${txtCorreo.text}');
-    print('Celular: ${txtCelular.text}');
-    print('Ciclo: $selectedCiclo');
-    print('Carrera: $selectedCarrera');
-    print('Contraseña: ${txtContrasenia.text}');
-
-    // Crear objeto de usuario y alumno
-    Map<String, dynamic> newUser = {
-      'idUsuario': DateTime.now().millisecondsSinceEpoch, // Genera un ID único
-      'codigo': txtCodigo.text,
-      'contrasena': txtContrasenia.text
-    };
-
-    Map<String, dynamic> newAlumno = {
-      'idAlumno': DateTime.now().millisecondsSinceEpoch,
-      'codigo': txtCodigo.text,
-      'correo': txtCorreo.text,
-      'nombre': txtNombre.text,
-      'celular': txtCelular.text,
-      'carrera': selectedCarrera,
-      'foto': 'default.jpg', // manejar la foto después
-      'ciclo': selectedCiclo,
-      'contrasena': txtContrasenia.text,
-    };
-
-    // Guardar los datos en los archivos JSON
-    await _saveUserToJson(newUser, 'usuarios.json');
-    await _saveUserToJson(newAlumno, 'alumnos.json');
-
-    // Muestra mensaje de éxito
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Cuenta creada exitosamente'),
-    ));
+  // Método para obtener las carreras desde el backend
+  Future<List<Carrera>> obtenerCarreras() async {
+    // Llama al servicio para obtener las carreras
+    List<Carrera>? carreras = await CarreraService().getCarreras();
+    return carreras ?? [];
   }
 
-  // Método para guardar los datos en un archivo JSON
-  Future<void> _saveUserToJson(
-      Map<String, dynamic> newData, String fileName) async {
-    try {
-      final directory = await getApplicationDocumentsDirectory();
-      final filePath = '${directory.path}/$fileName';
+  // Método para crear una cuenta de usuario
+  Future<void> createAccount(BuildContext context) async {
+    String codigo = txtCodigo.text;
+    String nombre = txtNombre.text;
+    String correo = txtCorreo.text;
+    String celular = txtCelular.text;
+    String contrasenia = txtContrasenia.text;
 
-      File file = File(filePath);
+    // Verificar que todos los campos sean llenados correctamente
+    if (codigo.isEmpty || nombre.isEmpty || correo.isEmpty || celular.isEmpty || contrasenia.isEmpty || selectedCarrera.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Por favor completa todos los campos')));
+      return;
+    }
 
-      if (!file.existsSync()) {
-        // Si el archivo no existe, crearlo
-        file = await File(filePath).create();
-        await file
-            .writeAsString(jsonEncode([newData])); // Guardar como nuevo JSON
-      } else {
-        // Leer los datos existentes
-        String fileContent = await file.readAsString();
-        List<dynamic> jsonData = jsonDecode(fileContent);
+    // Crear el nuevo usuario sin el idUsuario
+    Usuario nuevoUsuario = Usuario(
+      idUsuario: 0,  // Al registrar no se incluye el idUsuario, se generará en la base de datos
+      codigo: codigo,
+      correo: correo,
+      nombre: nombre,
+      celular: celular,
+      foto: selectedFoto, // Foto opcional
+      contrasena: contrasenia,
+      carreraId: int.parse(selectedCarrera.value),  // Usar `.value` para obtener el valor de `RxString`
+    );
 
-        // Agregar los nuevos datos
-        jsonData.add(newData);
+    // Usar el servicio de usuario para registrar al nuevo usuario
+    bool result = await UsuarioService().register(nuevoUsuario);
 
-        // Guardar los datos actualizados
-        await file.writeAsString(jsonEncode(jsonData));
-      }
-    } catch (e) {
-      print('Error al guardar datos: $e');
+    if (result) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Cuenta creada exitosamente')));
+      Navigator.of(context).pushNamed('/sign-in'); // Redirigir al login
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error al crear la cuenta')));
     }
   }
 }

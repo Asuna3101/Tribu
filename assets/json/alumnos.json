@@ -11,14 +11,16 @@
     "contrasena": "1234"
   },
   {
-    "idAlumno": 2,
-    "codigo": "20214446",
-    "correo": "20214446@aloe.ulima.edu.pe",
+    "idAlumno": 13,
+    "codigo": "20152024",
+    "correo": "20152024@aloe.ulima.edu.pe",
     "nombre": "Crisbeth Sovero",
     "celular": "912345678",
     "carrera": "Ingeniería de Sistemas",
     "foto": "https://example.com/foto2.jpg",
     "ciclo": 8,
-    "contrasena": "5678"
+    "contrasena": "1234"
   }
+
+  
 ]

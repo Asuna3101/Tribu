@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tribu_app/pages/buscar_profesores/buscar_profesores_page.dart';
 import 'package:tribu_app/pages/menu/menu_page.dart';
 import 'package:tribu_app/pages/muro/muro_page.dart';
 import '../../models/usuario.dart';
 import 'home_controller.dart';
 import 'package:tribu_app/configs/colors.dart';
-import 'package:tribu_app/pages/search/buscar_page.dart';
 import 'package:tribu_app/pages/postear/postear_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
       case 0:
         return MuroPage();
       case 1:
-        return BuscarPage();
+        return BuscarProfesoresPage();
       case 2:
         return PostearPage();
       case 3:

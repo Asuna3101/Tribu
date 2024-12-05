@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tribu_app/pages/change_password/change_controller.dart';
+import 'package:tribu_app/components/custom_button.dart'; // Importar el botón personalizado
 import 'package:tribu_app/configs/colors.dart';
-import 'change_controller.dart';
-import '../../components/custom_button.dart'; // Importa el botón personalizado
 
 class ChangePasswordPage extends StatelessWidget {
   ChangeController control = Get.put(ChangeController());
@@ -26,8 +26,7 @@ class ChangePasswordPage extends StatelessWidget {
               Text(
                 'Cambiar contraseña',
                 style: TextStyle(
-                  fontFamily:
-                      'Titulo', // Asegúrate de tener esta fuente cargada
+                  fontFamily: 'Titulo', // Asegúrate de tener esta fuente cargada
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: AppColors.primaryColor,
@@ -72,9 +71,7 @@ class ChangePasswordPage extends StatelessWidget {
               CustomButton(
                 title: 'Cambiar',
                 onPressed: () {
-                  print('Cambiar contraseña presionado');
-                  control.changePassword(
-                      context); // Método para cambiar la contraseña
+                  control.changePassword(context); // Método para cambiar la contraseña
                 },
               ),
               SizedBox(height: 20),
