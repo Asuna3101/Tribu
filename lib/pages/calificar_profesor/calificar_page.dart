@@ -17,7 +17,7 @@ class CalificarProfesorPage extends StatelessWidget {
           style: TextStyle(
             color: AppColors.primaryColor,
             fontFamily: 'Titulo',
-            fontSize: 24,
+            fontSize: 20,
           ),
         ),
         leading: IconButton(

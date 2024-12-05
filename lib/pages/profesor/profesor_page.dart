@@ -40,13 +40,20 @@ class _PerfilProfesorPageState extends State<PerfilProfesorPage> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
         title: Text('Perfil del profesor'),
         titleTextStyle: TextStyle(
           color: AppColors.primaryColor,
           fontFamily: 'Titulo',
           fontSize: 20,
         ),
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: AppColors.primaryColor),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
