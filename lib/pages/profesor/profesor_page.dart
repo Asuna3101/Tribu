@@ -21,8 +21,7 @@ class _PerfilProfesorPageState extends State<PerfilProfesorPage> {
     super.initState();
     // Recupera el objeto 'Profesor' pasado como argumento
     final Profesor profesor = Get.arguments;
-    _fetchCalificaciones(
-        profesor.idProfesor); // Llama al método para obtener calificaciones
+    _fetchCalificaciones(profesor.idProfesor);
   }
 
   Future<void> _fetchCalificaciones(int idProfesor) async {
@@ -42,9 +41,12 @@ class _PerfilProfesorPageState extends State<PerfilProfesorPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Perfil del profesor'),
-        titleTextStyle:
-            TextStyle(color: Colors.black, fontFamily: 'Titulo', fontSize: 20),
-        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        titleTextStyle: TextStyle(
+          color: AppColors.primaryColor,
+          fontFamily: 'Titulo',
+          fontSize: 20,
+        ),
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -60,62 +62,125 @@ class _PerfilProfesorPageState extends State<PerfilProfesorPage> {
                   backgroundColor: AppColors.primaryColor,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Center(
                 child: Text(
                   profesor.nombre,
                   style: TextStyle(
+                    fontFamily: 'Titulo',
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color: AppColors.primaryColor,
                   ),
                 ),
               ),
-              SizedBox(height: 10),
-              Text(
-                'Correo: ${profesor.correo}',
-                style: TextStyle(fontSize: 16, color: Colors.black87),
-              ),
-              SizedBox(height: 10),
-              Text(
-                'Biografía: ${profesor.biografia}',
-                style: TextStyle(fontSize: 16, color: Colors.black87),
-              ),
-              SizedBox(height: 20),
-              profesor.asignaturas.isNotEmpty
-                  ? Text(
-                      'Cursos: ${profesor.asignaturas.join(', ')}',
-                      style: TextStyle(fontSize: 16, color: Colors.black87),
-                    )
-                  : Text(
-                      'No tiene cursos asignados.',
-                      style: TextStyle(fontSize: 16, color: Colors.black87),
+              const SizedBox(height: 10),
+              RichText(
+                text: TextSpan(
+                  style: TextStyle(
+                    fontFamily: 'Texto',
+                    fontSize: 16,
+                    color: Colors.black87,
+                  ),
+                  children: [
+                    const TextSpan(
+                      text: 'Correo: ',
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-              SizedBox(height: 30),
-
+                    TextSpan(text: profesor.correo),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              RichText(
+                text: TextSpan(
+                  style: TextStyle(
+                    fontFamily: 'Texto',
+                    fontSize: 16,
+                    color: Colors.black87,
+                  ),
+                  children: [
+                    const TextSpan(
+                      text: 'Biografía: ',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(text: profesor.biografia),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              RichText(
+                text: TextSpan(
+                  style: TextStyle(
+                    fontFamily: 'Texto',
+                    fontSize: 16,
+                    color: Colors.black87,
+                  ),
+                  children: [
+                    const TextSpan(
+                      text: 'Cursos: ',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(
+                      text: profesor.asignaturas.isNotEmpty
+                          ? profesor.asignaturas.join(', ')
+                          : 'No tiene cursos asignados.',
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 30),
+              // Botón "Calificar"
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Acción para calificar
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primaryColor,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  child: const Text(
+                    'Calificar',
+                    style: TextStyle(
+                      fontFamily: 'Titulo',
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
               // Sección de calificaciones
               Text(
                 'Calificaciones:',
                 style: TextStyle(
+                  fontFamily: 'Titulo',
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: AppColors.primaryColor,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               isLoading
-                  ? Center(child: CircularProgressIndicator())
+                  ? const Center(child: CircularProgressIndicator())
                   : calificaciones == null || calificaciones!.isEmpty
-                      ? Center(
+                      ? const Center(
                           child: Text(
                             'No hay calificaciones disponibles.',
                             style: TextStyle(
-                                fontSize: 16, color: Colors.grey[600]),
+                              fontSize: 16,
+                              color: Colors.grey,
+                            ),
                           ),
                         )
                       : ListView.builder(
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: calificaciones!.length,
                           itemBuilder: (context, index) {
                             final calificacion = calificaciones![index];
