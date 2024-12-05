@@ -134,7 +134,8 @@ class _PerfilProfesorPageState extends State<PerfilProfesorPage> {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    // Acción para calificar
+                    Navigator.of(context)
+                        .pushNamed('/calificar'); // Acción para calificar
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryColor,
