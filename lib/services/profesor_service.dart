@@ -66,22 +66,4 @@ class ProfesorService {
       return null;
     }
   }
-
-// Método para obtener un Profesor por su curso
-  Future<List<dynamic>?> getProfesorByCurso(String curso_profesor) async {
-    final url = Uri.parse('${BASE_URL}profesores/buscar?curso=$curso_profesor');
-    try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        return data;
-      } else {
-        print('Error: ${response.statusCode}, ${response.body}');
-        return null;
-      }
-    } catch (e) {
-      print('Error de conexión: $e');
-      return null;
-    }
-  }
 }

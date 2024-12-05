@@ -56,13 +56,14 @@ class BuscarProfesoresPage extends StatelessWidget {
                         title: Text(
                           profesor.nombre,
                           style: TextStyle(
-                            fontFamily: 'Texto',
+                            fontFamily: 'Titulo',
                             fontSize: 16,
                             color: AppColors.primaryColor,
                           ),
                         ),
                         subtitle: Text(
-                          profesor.asignatura,
+                          profesor.asignaturas.join(
+                              ', '), // Cambié a 'asignatura' (en singular)
                           style: TextStyle(
                             fontFamily: 'Texto',
                             fontSize: 14,
@@ -70,8 +71,7 @@ class BuscarProfesoresPage extends StatelessWidget {
                           ),
                         ),
                         onTap: () {
-                          Get.toNamed('/perfilProfesor',
-                              arguments: profesor); // Navega al perfil
+                          Get.toNamed('/profesor', arguments: profesor);
                         },
                       );
                     },

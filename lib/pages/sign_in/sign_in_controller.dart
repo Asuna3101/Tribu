@@ -5,8 +5,6 @@ import '../../models/usuario.dart';
 import '../../services/usuario_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-
 class SignInController extends GetxController {
   UsuarioService usuarioService = UsuarioService();
   AlumnoService alumnoService = AlumnoService();
@@ -19,7 +17,6 @@ class SignInController extends GetxController {
   void login(BuildContext context) async {
     String codigo = txtUsuario.text;
     String contrasena = txtContrasenia.text;
-
 
     // Validar campos vacíos
     if (codigo.isEmpty || contrasena.isEmpty) {
@@ -41,7 +38,6 @@ class SignInController extends GetxController {
       // Guardar el idUsuario en SharedPreferences
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setInt('idUsuario', usuario.idUsuario);
-      
     } else {
       mensaje.value = 'Error : Usuario o contraseña incorrectos';
       Future.delayed(Duration(seconds: 4), () {

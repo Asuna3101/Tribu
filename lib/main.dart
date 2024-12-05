@@ -13,7 +13,7 @@ import 'package:tribu_app/pages/config/config_page.dart';
 import 'package:tribu_app/pages/change_password/change_password_page.dart';
 import 'package:tribu_app/configs/app_theme.dart'; // Importa tu archivo de temas
 import 'package:tribu_app/pages/visualizacion/visualizacion_page.dart';
-//import 'package:tribu_app/pages/profesor/profesor_page.dart';
+import 'package:tribu_app/pages/profesor/profesor_page.dart';
 import 'package:tribu_app/pages/calificar_profesor/calificar_page.dart';
 
 void main() {
@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/config', page: () => ConfigPage()),
         GetPage(name: '/change', page: () => ChangePasswordPage()),
         GetPage(name: '/visualizacion', page: () => VisualizacionPage()),
-        //GetPage(name: '/profesor', page: () => ProfesorPage()),
+        GetPage(name: '/profesor', page: () => PerfilProfesorPage()),
         GetPage(name: '/calificar', page: () => CalificarProfesorPage()),
       ],
     );

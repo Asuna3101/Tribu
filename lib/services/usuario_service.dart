@@ -42,10 +42,10 @@ class UsuarioService {
     }
   }
 
-
-   // Método para registrar un nuevo usuario
+  // Método para registrar un nuevo usuario
   Future<bool> register(Usuario usuario) async {
-    final url = Uri.parse('${BASE_URL}usuarios'); // Endpoint para registrar usuario
+    final url =
+        Uri.parse('${BASE_URL}usuarios'); // Endpoint para registrar usuario
 
     try {
       // Enviar solicitud POST con los datos del usuario
@@ -83,7 +83,8 @@ class UsuarioService {
 
   // Método para obtener usuario por correo
   Future<Usuario?> getUserByEmail(String correo) async {
-    final url = Uri.parse('${BASE_URL}usuario/correo/$correo'); // Endpoint para obtener usuario por correo
+    final url = Uri.parse(
+        '${BASE_URL}usuario/correo/$correo'); // Endpoint para obtener usuario por correo
 
     try {
       // Enviar solicitud GET con el correo como parámetro
@@ -111,49 +112,41 @@ class UsuarioService {
       return null;
     }
   }
+
 // Método para cambiar la contraseña en el backend
-Future<bool> changePassword(String codigo, String nuevaContrasenia) async {
-  final url = Uri.parse('${BASE_URL}usuarios/$codigo/contrasenia'); // Endpoint correcto para actualizar la contraseña
+  Future<bool> changePassword(String codigo, String nuevaContrasenia) async {
+    final url = Uri.parse(
+        '${BASE_URL}usuarios/$codigo/contrasenia'); // Endpoint correcto para actualizar la contraseña
 
-  // Verifica que el código y la nueva contraseña son correctos
-  print('Código: $codigo, Nueva Contraseña: $nuevaContrasenia');  // Depuración
+    // Verifica que el código y la nueva contraseña son correctos
+    print('Código: $codigo, Nueva Contraseña: $nuevaContrasenia'); // Depuración
 
-  try {
-    final response = await http.put(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode({'nueva_contrasenia': nuevaContrasenia}),
-    );
+    try {
+      final response = await http.put(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'nueva_contrasenia': nuevaContrasenia}),
+      );
 
-    if (response.statusCode == 200) {
-      return true;  // Contraseña cambiada con éxito
-    } else if (response.statusCode == 400) {
-      // Error en la validación
-      print('Error: La nueva contraseña no puede estar vacía');
-      return false;
-    } else if (response.statusCode == 404) {
-      // Usuario no encontrado
-      print('Error: Usuario no encontrado');
-      return false;
-    } else {
-      // Error genérico
-      print('Error: ${response.statusCode}, ${response.body}');
+      if (response.statusCode == 200) {
+        return true; // Contraseña cambiada con éxito
+      } else if (response.statusCode == 400) {
+        // Error en la validación
+        print('Error: La nueva contraseña no puede estar vacía');
+        return false;
+      } else if (response.statusCode == 404) {
+        // Usuario no encontrado
+        print('Error: Usuario no encontrado');
+        return false;
+      } else {
+        // Error genérico
+        print('Error: ${response.statusCode}, ${response.body}');
+        return false;
+      }
+    } catch (e) {
+      // Error de conexión
+      print('Error de conexión: $e');
       return false;
     }
-  } catch (e) {
-    // Error de conexión
-    print('Error de conexión: $e');
-    return false;
   }
 }
-
-
-}
-
-
-    /*if (usuario == 'admin' && contrasenia == '123') {
-      return Usuario(idUsuario: 10, correo: '20210274@aloe.ulima.edu.pe');
-    } else {
-      return null;
-    }*/
-  
