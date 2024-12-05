@@ -5,6 +5,7 @@ class Post {
   final String descripcionPost;
   final String enlaceMaterial;
   final String fechaSubida;
+  final int postId;
 
   Post({
     required this.nombreUsuario,
@@ -13,11 +14,14 @@ class Post {
     required this.descripcionPost,
     required this.enlaceMaterial,
     required this.fechaSubida,
+    required this.postId,
   });
 
   @override
   String toString() {
-    return 'Post{nombreUsuario: $nombreUsuario, fotoUsuario: $fotoUsuario, carrera: $carrera, descripcionPost: $descripcionPost, enlaceMaterial: $enlaceMaterial, fechaSubida: $fechaSubida}';
+    return 'Post{nombreUsuario: $nombreUsuario, fotoUsuario: $fotoUsuario, carrera: $carrera, descripcionPost: $descripcionPost, enlaceMaterial: $enlaceMaterial, fechaSubida: $fechaSubida,  postId: $postId}';
+                   
+  
   }
 
   Map<String, dynamic> toJson() {
@@ -28,6 +32,7 @@ class Post {
       'descripcion_post': descripcionPost,
       'enlace_material': enlaceMaterial,
       'fecha_subida': fechaSubida,
+       'post_id': postId,
     };
   }
 
@@ -39,6 +44,7 @@ class Post {
       descripcionPost: map['descripcion_post'],
       enlaceMaterial: map['enlace_material'],
       fechaSubida: map['fecha_subida'],
+      postId: map['post_id']
     );
   }
 }

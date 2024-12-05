@@ -27,6 +27,7 @@ class MuroPage extends StatelessWidget {
                     userCareer: post.carrera,
                     postText: post.descripcionPost,
                     postImageUrl: post.enlaceMaterial,
+                    postId: post.postId,
                   
                   );
                 },

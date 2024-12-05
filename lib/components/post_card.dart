@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:tribu_app/services/reaccion_service.dart';
 
-class PostCard extends StatelessWidget {
+class PostCard extends StatefulWidget {
   final String profilePicUrl;
   final String userName;
   final String userCareer;
   final String postText;
   final String postImageUrl;
- 
+  final int postId;
 
   const PostCard({
     Key? key,
@@ -15,7 +16,54 @@ class PostCard extends StatelessWidget {
     required this.userCareer,
     required this.postText,
     required this.postImageUrl,
+    required this.postId,
   }) : super(key: key);
+
+  @override
+  _PostCardState createState() => _PostCardState();
+}
+
+class _PostCardState extends State<PostCard> {
+  int totalReacciones = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchReacciones();
+  }
+
+  void _fetchReacciones() async {
+    try {
+      final reacciones = await ReaccionService().fetchReacciones(widget.postId);
+      setState(() {
+        totalReacciones = reacciones.totalLikes;
+      });
+    } catch (e) {
+      print("Error al obtener reacciones: $e");
+    }
+  }
+
+  void _mostrarReacciones(BuildContext context) async {
+    try {
+      final reacciones =
+          await ReaccionService().fetchReacciones(widget.postId);
+
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Reacciones (${reacciones.totalLikes})'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: reacciones.nombresUsuarios
+                .map((nombre) => Text(nombre))
+                .toList(),
+          ),
+        ),
+      );
+    } catch (e) {
+      print("Error al obtener reacciones: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,53 +75,58 @@ class PostCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header (Profile picture, User info)
             Row(
               children: [
                 CircleAvatar(
                   radius: 20,
-                  backgroundImage: NetworkImage(profilePicUrl), // Profile picture
+                  backgroundImage: NetworkImage(widget.profilePicUrl),
                 ),
                 const SizedBox(width: 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      userName,
+                      widget.userName,
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    Text(userCareer), // User's career
+                    Text(widget.userCareer),
                   ],
                 ),
               ],
             ),
             const SizedBox(height: 10),
-
-            // Post text
-            Text(postText),
-
-            // Post image
+            Text(widget.postText),
             const SizedBox(height: 10),
             Image.network(
-              postImageUrl, // Image from URL
+              widget.postImageUrl,
               fit: BoxFit.cover,
             ),
-
-            // Icons (Like, Comment)
             const SizedBox(height: 10),
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.favorite_border),
+                Row(
+                  children: [
+                    Icon(Icons.favorite, color: Colors.red),
+                    const SizedBox(width: 5),
+                    GestureDetector(
+                      onTap: () => _mostrarReacciones(context),
+                      child: Text(
+                        '$totalReacciones',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                Text(''),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    // Otras funcionalidades
+                  },
                   icon: const Icon(Icons.chat_bubble_outline),
                 ),
-                Text(''),
               ],
             ),
           ],
