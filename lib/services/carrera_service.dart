@@ -16,7 +16,8 @@ class CarreraService {
         final data = json.decode(response.body);
 
         // Aquí se espera que el backend retorne una lista de objetos carrera
-        return List<Carrera>.from(data.map((x) => Carrera.fromMap(x))); // Convierte el JSON a objetos de tipo Carrera
+        return List<Carrera>.from(data.map((x) =>
+            Carrera.fromMap(x))); // Convierte el JSON a objetos de tipo Carrera
       } else {
         // Si la respuesta no es exitosa
         print('Error: ${response.statusCode}, ${response.body}');
@@ -29,4 +30,3 @@ class CarreraService {
     }
   }
 }
-
