@@ -38,11 +38,4 @@ class PostearController extends GetxController {
       isLoading.value = false;
     }
   }
-
-  // Eliminamos el método changeUser, ya que no es necesario y podría comprometer la seguridad
-  // Future<void> changeUser(int newUserId) async {
-  //   usuarioId.value = newUserId; // Actualiza el usuarioId
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   await prefs.setInt('usuarioId', newUserId); // Guarda el nuevo ID
-  // }
 }

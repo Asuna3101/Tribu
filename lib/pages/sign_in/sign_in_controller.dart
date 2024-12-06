@@ -37,6 +37,7 @@ class SignInController extends GetxController {
 
       // Guardar el idUsuario en SharedPreferences
       SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setInt('idUsuario', usuario.idUsuario);
       await prefs.setString('codigo', usuario.codigo);
       await prefs.setString('correo', usuario.correo);
       await prefs.setString('nombre', usuario.nombre);
