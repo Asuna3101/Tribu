@@ -54,4 +54,35 @@ class PostService {
     }
     return posts;
   }
+
+
+  // Método para agregar un post (si aún no lo tienes en el servicio)
+  Future<Map<String, dynamic>> agregarPost(int usuarioId, int carreraId, String descripcion, String enlace, {String? nombreMaterial, String? tipoMaterial}) async {
+    final url = Uri.parse('${BASE_URL}posts-agregar'); // Endpoint para agregar el post
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'usuario_id': usuarioId,
+          'carrera_id': carreraId,
+          'descripcion': descripcion,
+          'enlace': enlace,
+          'nombre_material': nombreMaterial ?? 'Material sin nombre',
+          'tipo_material': tipoMaterial ?? 'Otro',
+        }),
+      );
+
+      if (response.statusCode == 201) {
+        return json.decode(response.body);
+      } else {
+        throw Exception('Error al agregar el post');
+      }
+    } catch (e) {
+      throw Exception('Error en la conexión: $e');
+    }
+  }
+  
+
 }
