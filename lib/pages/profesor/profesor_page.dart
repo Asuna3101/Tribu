@@ -1,42 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tribu_app/models/profesor.dart';
-import 'package:tribu_app/models/calificacion.dart';
-import 'package:tribu_app/services/calificacion_service.dart';
 import 'package:tribu_app/components/CalificacionCard.dart';
 import 'package:tribu_app/configs/colors.dart';
+import 'package:tribu_app/pages/profesor/profesor_controller.dart';
 
-class PerfilProfesorPage extends StatefulWidget {
-  @override
-  _PerfilProfesorPageState createState() => _PerfilProfesorPageState();
-}
-
-class _PerfilProfesorPageState extends State<PerfilProfesorPage> {
-  final CalificacionService calificacionService = CalificacionService();
-  List<Calificacion>? calificaciones;
-  bool isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    // Recupera el objeto 'Profesor' pasado como argumento
-    final Profesor profesor = Get.arguments;
-    _fetchCalificaciones(profesor.idProfesor);
-  }
-
-  Future<void> _fetchCalificaciones(int idProfesor) async {
-    final data =
-        await calificacionService.getCalificacionByProfesorId(idProfesor);
-    setState(() {
-      calificaciones = data;
-      isLoading = false;
-    });
-  }
+class PerfilProfesorPage extends StatelessWidget {
+  final PerfilProfesorController controller =
+      Get.put(PerfilProfesorController());
 
   @override
   Widget build(BuildContext context) {
     // Recupera el objeto 'Profesor' pasado como argumento
     final Profesor profesor = Get.arguments;
+
+    // Fetch de calificaciones al cargar la página
+    controller.fetchCalificaciones(profesor.idProfesor);
 
     return Scaffold(
       appBar: AppBar(
@@ -138,39 +117,40 @@ class _PerfilProfesorPageState extends State<PerfilProfesorPage> {
               ),
               const SizedBox(height: 30),
               // Botón "Calificar"
-             Center(
-  child: ElevatedButton(
-    onPressed: () async {
-      final resultado = await Navigator.of(context).pushNamed(
-        '/calificar',
-        arguments: {
-          'idProfesor': profesor.idProfesor,
-          'nombreProfesor': profesor.nombre,
-        },
-      );
+              Center(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    final resultado = await Navigator.of(context).pushNamed(
+                      '/calificar',
+                      arguments: {
+                        'idProfesor': profesor.idProfesor,
+                        'nombreProfesor': profesor.nombre,
+                      },
+                    );
 
-      if (resultado == true) {
-        // Actualiza las calificaciones del profesor después de calificar
-        _fetchCalificaciones(profesor.idProfesor);
-      }
-    },
-    style: ElevatedButton.styleFrom(
-      backgroundColor: AppColors.primaryColor,
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-    ),
-    child: const Text(
-      'Calificar',
-      style: TextStyle(
-        fontFamily: 'Titulo',
-        fontSize: 16,
-        color: Colors.white,
-      ),
-    ),
-  ),
-),
+                    if (resultado == true) {
+                      // Actualiza las calificaciones del profesor después de calificar
+                      controller.fetchCalificaciones(profesor.idProfesor);
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primaryColor,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  child: const Text(
+                    'Calificar',
+                    style: TextStyle(
+                      fontFamily: 'Titulo',
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
               const SizedBox(height: 20),
               // Sección de calificaciones
               Text(
@@ -183,27 +163,31 @@ class _PerfilProfesorPageState extends State<PerfilProfesorPage> {
                 ),
               ),
               const SizedBox(height: 20),
-              isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : calificaciones == null || calificaciones!.isEmpty
-                      ? const Center(
-                          child: Text(
-                            'No hay calificaciones disponibles.',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        )
-                      : ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: calificaciones!.length,
-                          itemBuilder: (context, index) {
-                            final calificacion = calificaciones![index];
-                            return CalificacionCard(calificacion: calificacion);
-                          },
-                        ),
+              Obx(() {
+                if (controller.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (controller.calificaciones.isEmpty) {
+                  return const Center(
+                    child: Text(
+                      'No hay calificaciones disponibles.',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  );
+                } else {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: controller.calificaciones.length,
+                    itemBuilder: (context, index) {
+                      final calificacion = controller.calificaciones[index];
+                      return CalificacionCard(calificacion: calificacion);
+                    },
+                  );
+                }
+              }),
             ],
           ),
         ),
