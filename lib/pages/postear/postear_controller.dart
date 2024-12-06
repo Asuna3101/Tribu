@@ -1,39 +1,37 @@
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tribu_app/services/post_service.dart';
 import 'package:tribu_app/models/post.dart';
+import 'package:tribu_app/services/post_service.dart';
 
 class PostearController extends GetxController {
   final PostService postService = PostService();
-  var usuarioId = 1.obs; // Usuario ID observable
-  var posts = <Post>[].obs; // Lista observable de publicaciones
-  var isLoading = false.obs; // Indicador de carga
+  var posts = <Post>[].obs; 
+  var isLoading = false.obs; 
+  int? userId; 
 
   @override
   void onInit() {
     super.onInit();
-    _loadUserId(); // Carga el ID del usuario logueado
-    usuarioId.listen((_) {
-      fetchPostsByUser(); // Carga los posts cada vez que cambia el usuarioId
-    });
+    _loadUserId();
   }
 
-  /// Cargar el ID del usuario desde SharedPreferences
-  Future<void> _loadUserId() async {
+  _loadUserId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    usuarioId.value = prefs.getInt('usuarioId') ?? 1; // Carga el ID guardado
+    userId = prefs.getInt('idUsuario'); 
+    if (userId != null) {
+      fetchPostsByUserId(userId!); 
+    } else {
+      print('ID de usuario no encontrado');
+    }
   }
 
-  /// Método para cargar los posts del usuario
-  Future<void> fetchPostsByUser() async {
+  // Función para obtener publicaciones por ID de usuario
+  Future<void> fetchPostsByUserId(int userId) async {
     isLoading.value = true;
     try {
-      print(
-          'Fetching posts for user: ${usuarioId.value}'); // Agrega un log para verificar el ID
-      final fetchedPosts = await postService.fetchByUserId(usuarioId.value);
-      posts.assignAll(fetchedPosts); // Asigna las publicaciones obtenidas
+      posts.value = await postService.fetchByUserId(userId); // Llamamos al servicio
     } catch (e) {
-      print('Error al obtener las publicaciones: $e');
+      print('Error al obtener publicaciones: $e');
     } finally {
       isLoading.value = false;
     }
