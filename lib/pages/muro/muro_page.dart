@@ -28,6 +28,8 @@ class MuroPage extends StatelessWidget {
                     postText: post.descripcionPost,
                     postImageUrl: post.enlaceMaterial,
                     postId: post.postId,
+                    isLiked: false, // Puedes usar una propiedad del post si existe
+                    onToggleLike: (postId) => control.toggleLike(postId),
                   );
                 },
               );

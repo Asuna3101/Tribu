@@ -7,7 +7,9 @@ class PostCard extends StatefulWidget {
   final String userCareer;
   final String postText;
   final String postImageUrl;
+  final bool isLiked; // Estado inicial del like
   final int postId;
+  final Function onToggleLike; // Nueva función
 
   const PostCard({
     Key? key,
@@ -16,25 +18,30 @@ class PostCard extends StatefulWidget {
     required this.userCareer,
     required this.postText,
     required this.postImageUrl,
+    required this.isLiked,
     required this.postId,
+    required this.onToggleLike, // Recibe la función de manejar "Me gusta"
   }) : super(key: key);
+
 
   @override
   _PostCardState createState() => _PostCardState();
 }
 
 class _PostCardState extends State<PostCard> {
+   late bool _isLiked; // Estado local para "Me gusta"
   int totalReacciones = 0;
 
   @override
   void initState() {
     super.initState();
+     _isLiked = widget.isLiked; // Inicializa el estado local con el valor recibido
     _fetchReacciones();
   }
 
   void _fetchReacciones() async {
     try {
-      final reacciones = await ReaccionService().fetchReacciones(widget.postId);
+      final reacciones = await ReactionService().fetchReacciones(widget.postId);
       setState(() {
         totalReacciones = reacciones.totalLikes;
       });
@@ -43,10 +50,19 @@ class _PostCardState extends State<PostCard> {
     }
   }
 
+  void _toggleLike() async {
+    widget.onToggleLike(widget.postId);
+
+    setState(() {
+      _isLiked = !_isLiked;
+      totalReacciones += _isLiked ? 1 : -1; 
+    });
+  }
+
   void _mostrarReacciones(BuildContext context) async {
     try {
       final reacciones =
-          await ReaccionService().fetchReacciones(widget.postId);
+          await ReactionService().fetchReacciones(widget.postId);
 
       showDialog(
         context: context,
@@ -105,9 +121,16 @@ class _PostCardState extends State<PostCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                IconButton(
+                  icon: Icon(
+                    _isLiked ? Icons.favorite : Icons.favorite_border,
+                    color: _isLiked ? Colors.red : Colors.grey,
+                  ),
+                  onPressed: _toggleLike, // Cambiar el estado cuando se toca
+                ),
                 Row(
                   children: [
-                    Icon(Icons.favorite, color: Colors.red),
+                    Icon(Icons.add_reaction, color: Colors.red),
                     const SizedBox(width: 5),
                     GestureDetector(
                       onTap: () => _mostrarReacciones(context),
@@ -123,7 +146,6 @@ class _PostCardState extends State<PostCard> {
                 ),
                 IconButton(
                   onPressed: () {
-                    // Otras funcionalidades
                   },
                   icon: const Icon(Icons.chat_bubble_outline),
                 ),
