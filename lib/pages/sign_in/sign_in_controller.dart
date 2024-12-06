@@ -37,7 +37,14 @@ class SignInController extends GetxController {
 
       // Guardar el idUsuario en SharedPreferences
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setInt('idUsuario', usuario.idUsuario);
+      await prefs.setString('codigo', usuario.codigo);
+      await prefs.setString('correo', usuario.correo);
+      await prefs.setString('nombre', usuario.nombre);
+      await prefs.setString('celular', usuario.celular);
+      await prefs.setString(
+          'foto', usuario.foto); // Suponiendo que foto es un URL o path
+      await prefs.setInt('carrera_id',
+          usuario.carreraId); // carreraId es el campo del modelo Usuario
     } else {
       mensaje.value = 'Error : Usuario o contraseña incorrectos';
       Future.delayed(Duration(seconds: 4), () {

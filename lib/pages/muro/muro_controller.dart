@@ -11,12 +11,4 @@ class MuroController extends GetxController {
     posts.value = await postService.fetchAll();
     print(posts.value);
   }
-  /*void updateUsuario(Usuario u) {
-    Future.delayed(Duration(seconds: 5), () {
-      usuario.update((val) {
-        val?.idUsuario = u.idUsuario;
-        val?.correo = u.correo;
-      });
-    });
-  }*/
 }

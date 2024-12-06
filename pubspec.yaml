@@ -48,8 +48,6 @@ flutter:
   assets:
     - assets/img/splash/splash_icon.png
     - assets/img/splash/splash_icon_dark.png
-    - assets/json/post.json
     - assets/img/adaptive_icon_foreground.png
     - assets/img/sample-post-image.png
     - assets/img/sample-profile-image.png
-    - assets/json/alumnos.json
