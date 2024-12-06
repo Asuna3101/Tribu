@@ -138,30 +138,39 @@ class _PerfilProfesorPageState extends State<PerfilProfesorPage> {
               ),
               const SizedBox(height: 30),
               // Botón "Calificar"
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context)
-                        .pushNamed('/calificar'); // Acción para calificar
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primaryColor,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 10),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  child: const Text(
-                    'Calificar',
-                    style: TextStyle(
-                      fontFamily: 'Titulo',
-                      fontSize: 16,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
+             Center(
+  child: ElevatedButton(
+    onPressed: () async {
+      final resultado = await Navigator.of(context).pushNamed(
+        '/calificar',
+        arguments: {
+          'idProfesor': profesor.idProfesor,
+          'nombreProfesor': profesor.nombre,
+        },
+      );
+
+      if (resultado == true) {
+        // Actualiza las calificaciones del profesor después de calificar
+        _fetchCalificaciones(profesor.idProfesor);
+      }
+    },
+    style: ElevatedButton.styleFrom(
+      backgroundColor: AppColors.primaryColor,
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+    ),
+    child: const Text(
+      'Calificar',
+      style: TextStyle(
+        fontFamily: 'Titulo',
+        fontSize: 16,
+        color: Colors.white,
+      ),
+    ),
+  ),
+),
               const SizedBox(height: 20),
               // Sección de calificaciones
               Text(

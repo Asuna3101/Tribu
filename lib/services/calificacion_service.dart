@@ -30,4 +30,41 @@ class CalificacionService {
       return null;
     }
   }
+
+
+  //Mandar info al backend
+  // Método para enviar una calificación al backend
+  Future<void> enviarCalificacion({
+    required int idProfesor,
+    required int usuarioId,
+    required int estrella,
+    required String resenia,
+  }) async {
+    final url = Uri.parse('${BASE_URL}profesor/$idProfesor/calificacion');
+
+    // Crear el cuerpo de la solicitud
+    final body = {
+      'usuario_id': usuarioId,
+      'estrella': estrella,
+      'resenia': resenia,
+    };
+
+    try {
+      // Realizar la solicitud POST
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'}, // Establecer el tipo de contenido
+        body: json.encode(body), // Convertir el mapa a JSON
+      );
+
+      // Verificar si la respuesta fue exitosa
+      if (response.statusCode == 201) {
+        print('Calificación enviada con éxito: ${response.body}');
+      } else {
+        print('Error al enviar calificación: ${response.statusCode}, ${response.body}');
+      }
+    } catch (e) {
+      print('Error al realizar la solicitud: $e');
+    }
+  }
 }

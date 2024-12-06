@@ -35,16 +35,17 @@ class CalificarProfesorPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Mostrar el nombre del profesor
                 Center(
-                  child: Text(
-                    controller.profesor.value.nombre,
-                    style: const TextStyle(
-                      fontFamily: 'Titulo',
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
+                  child: Obx(() => Text(
+                        controller.profesorNombre.value, // Nombre del profesor
+                        style: const TextStyle(
+                          fontFamily: 'Titulo',
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryColor,
+                        ),
+                      )),
                 ),
                 const SizedBox(height: 30),
                 const Text(

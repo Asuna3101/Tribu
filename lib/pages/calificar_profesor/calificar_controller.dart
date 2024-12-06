@@ -1,78 +1,85 @@
-import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tribu_app/services/calificacion_service.dart';
 
 class CalificarController extends GetxController {
-  var profesor = Profesor(
-    id: 1,
-    nombre: "Valdivia Jose",
-    calificaciones: [],
-  ).obs;
+  final CalificacionService calificacionService = CalificacionService();
 
-  var estrellas = 0.obs;
-  final TextEditingController reseniacontroller = TextEditingController();
+  // ID y nombre del profesor
+  final profesorId = 0.obs;
+  final profesorNombre = ''.obs;
 
-  void seleccionarEstrellas(int valor) {
-    estrellas.value = valor;
-  }
+  // Estrellas seleccionadas
+  final estrellas = 0.obs;
 
-  void enviarCalificacion() {
-    if (estrellas.value == 0) {
-      Get.snackbar(
-        "Error",
-        "Por favor selecciona una cantidad de estrellas.",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
-      return;
-    }
-    if (reseniacontroller.text.isEmpty) {
-      Get.snackbar(
-        "Error",
-        "Por favor escribe una reseña.",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
-      return;
-    }
+  // ID del usuario logueado
+  final usuarioId = 0.obs;
 
-    // Agregar la nueva calificación al perfil del profesor
-    profesor.value.calificaciones.add({
-      'estrellas': estrellas.value,
-      'reseña': reseniacontroller.text,
-    });
-
-    profesor.refresh(); // Actualiza el estado del profesor
-
-    Get.snackbar(
-      "¡Gracias!",
-      "Tu calificación ha sido enviada.",
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.green,
-      colorText: Colors.white,
-    );
-
-    // Reiniciar el formulario
-    estrellas.value = 0;
-    reseniacontroller.clear();
-  }
+  // Controlador para la reseña
+  final reseniacontroller = TextEditingController();
 
   @override
-  void onClose() {
-    reseniacontroller.dispose();
-    super.onClose();
+  void onInit() async {
+    super.onInit();
+      
+
+
+    // Recuperar el ID del usuario desde SharedPreferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    usuarioId.value = prefs.getInt('idUsuario') ?? 0;
+
+    // Verificar si el usuario está logueado
+    if (usuarioId.value == 0) {
+      Get.snackbar(
+        'Error',
+        'Debes iniciar sesión para calificar.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      Get.offAllNamed('/login'); // Redirigir a la pantalla de login
+      return;
+    }
+
+    // Recibir ID y nombre del profesor desde Get.arguments
+    final arguments = Get.arguments as Map<String, dynamic>;
+    profesorId.value = arguments['idProfesor'] as int;
+    profesorNombre.value = arguments['nombreProfesor'] as String;
   }
-}
 
-class Profesor {
-  int id;
-  String nombre;
-  List<Map<String, dynamic>> calificaciones;
+  // Seleccionar estrellas
+  void seleccionarEstrellas(int numero) {
+    estrellas.value = numero;
+  }
 
-  Profesor({
-    required this.id,
-    required this.nombre,
-    required this.calificaciones,
-  });
+  // Enviar calificación
+  Future<void> enviarCalificacion() async {
+    if (estrellas.value == 0 || reseniacontroller.text.isEmpty) {
+      Get.snackbar(
+        'Error',
+        'Debes completar todos los campos antes de calificar.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return;
+    }
+
+    try {
+      await calificacionService.enviarCalificacion(
+        idProfesor: profesorId.value,
+        usuarioId: usuarioId.value, // Usar el ID del usuario logueado
+        estrella: estrellas.value,
+        resenia: reseniacontroller.text,
+      );
+      Get.snackbar(
+        'Éxito',
+        'La calificación se ha enviado correctamente.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Ocurrió un problema al enviar la calificación.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
 }
